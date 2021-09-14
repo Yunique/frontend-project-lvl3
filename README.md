@@ -1,1 +1,1 @@
-<a href="https://codeclimate.com/github/Yunique/frontend-project-lvl3/maintainability"><img src="https://api.codeclimate.com/v1/badges/b57a941139a0e58e4db1/maintainability" /></a> ![Node.js CI](https://github.com/Yunique/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg)
+<a href="https://codeclimate.com/github/Yunique/frontend-project-lvl3/maintainability"><img src="https://api.codeclimate.com/v1/badges/b57a941139a0e58e4db1/maintainability" /></a> ![Node.js CI](https://github.com/Yunique/frontend-project-lvl3/workflows/Node.js%20CI/badge.svg)
