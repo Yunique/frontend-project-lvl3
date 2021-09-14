@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Yunique/frontend-project-lvl3/issues"
   },
-  "homepage": "https://github.com/Yunique/frontend-project-lvl3#readme"
+  "homepage": "https://github.com/Yunique/frontend-project-lvl3#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  }
 }
