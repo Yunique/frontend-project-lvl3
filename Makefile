@@ -1,5 +1,5 @@
 develop:
-	npx webpack serve
+	npm start
 
 install:
 	npm ci
