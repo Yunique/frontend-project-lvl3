@@ -76,6 +76,9 @@ export default () => {
             data.feed.id = feedId;
             state.form.fields.feeds.push(data.feed);
             const postsList = [];
+            // Парсить каждый новоприбывший пост в объект (как и фид), и только потом рендерить
+            // Array.from() ---> arr.filter() ---> posts.push(filtered)
+            // Повторить промисы.
             data.posts.forEach((post) => {
               postsList.push({
                 id: ID(),
@@ -84,11 +87,16 @@ export default () => {
               });
             });
             state.form.fields.posts.push(postsList);
-            return render(state);
+            render(state);
+          } else {
+            renderError('Network is not ok.', input);
           }
-          throw new Error('Network response was not ok.');
         }).catch((err) => {
-          renderError(err.message, input);
+          if (err.message === 'Network Error') {
+            renderError('Network is not ok.', input);
+          } else {
+            renderError(err.message, input);
+          }
         });
       render(state);
     }
