@@ -1,13 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const dynamicEntryPoints = require('dynamic-webpack-entries');
+
+const entries = dynamicEntryPoints({
+  entryFolder: './src/',
+});
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
-  entry: {
-    index: './src/index.js',
-    init: './src/init.js',
-    view: './src/view.js',
-  },
+  entry: entries,
   devtool: 'inline-source-map',
   devServer: {
     static: './dist',
@@ -27,23 +28,7 @@ module.exports = {
       { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
       {
         test: /\.scss$/,
-        use: [{
-          loader: 'style-loader', // inject CSS to page
-        }, {
-          loader: 'css-loader', // translates CSS into CommonJS modules
-        }, {
-          loader: 'postcss-loader', // Run post css actions
-          options: {
-            plugins: function () { // post css plugins, can be exported to postcss.config.js
-              return [
-                require('precss'),
-                require('autoprefixer')
-              ];
-            }
-          }
-        }, {
-          loader: 'sass-loader' // compiles Sass to CSS
-        }]
+        use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
       },
       {
         test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -64,5 +49,5 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-  }
+  },
 };

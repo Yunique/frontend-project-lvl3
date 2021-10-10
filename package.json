@@ -32,6 +32,7 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^6.2.0",
     "debug": "^4.3.2",
+    "dynamic-webpack-entries": "^1.0.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-babel": "^5.3.1",
@@ -50,10 +51,13 @@
     "webpack-dev-server": "^4.2.1"
   },
   "dependencies": {
+    "axios": "^0.22.0",
     "bootstrap": "^5.1.1",
-    "on-change": "^4.0.0",
+    "i18next": "^21.1.0",
     "lodash": "^4.17.21",
     "npm-check-updates": "^11.8.5",
+    "on-change": "^4.0.0",
+    "regenerator-runtime": "^0.13.9",
     "sass": "^1.39.0",
     "sass-loader": "^12.1.0",
     "yup": "^0.32.9"
