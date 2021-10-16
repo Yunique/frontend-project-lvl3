@@ -1,14 +1,22 @@
 export default (data) => {
   const parser = new DOMParser();
 
-  const xml = data.contents;
+  const { contents } = data;
   try {
-    const parsed = parser.parseFromString(xml, 'text/xml');
+    const parsed = parser.parseFromString(contents, 'text/xml');
+    const htmlPosts = parsed.querySelectorAll('item');
+    const posts = [];
+    htmlPosts.forEach((post) => {
+      posts.push({
+        link: post.querySelector('link').textContent,
+        title: post.querySelector('title').textContent,
+      });
+    });
     return {
-      posts: parsed.querySelectorAll('item'),
+      posts,
       feed: {
-        title: parsed.querySelector('channel > title'),
-        description: parsed.querySelector('channel > description'),
+        title: parsed.querySelector('channel > title').textContent,
+        description: parsed.querySelector('channel > description').textContent,
       },
     };
   } catch (err) {

@@ -4,16 +4,6 @@
 // input.setAttribute('required', 'true');
 // input.setAttribute('autofocus', 'true');
 
-// const makeUL = (array) => {
-//   const list = document.createElement('ul');
-//   for (let i = 0; i < array.length; i += 1) {
-//     const item = document.createElement('li');
-//     item.appendChild(document.createTextNode(array[i]));
-//     list.appendChild(item);
-//   }
-//   return list;
-// };
-
 export const render = (state) => {
   const input = document.querySelector('input');
   if (input.classList.contains('is-invalid')) {
@@ -26,9 +16,9 @@ export const render = (state) => {
   state.form.fields.feeds.forEach((feed) => {
     const li = document.createElement('li');
     const title = document.createElement('H3');
-    title.innerHTML = feed.title.textContent;
+    title.innerHTML = feed.title;
     const description = document.createElement('p');
-    description.innerHTML = feed.description.textContent;
+    description.innerHTML = feed.description;
     li.append(title, description);
     newFeedsUl.append(li);
   });
@@ -36,14 +26,12 @@ export const render = (state) => {
 
   const postsUl = document.querySelector('div[name="posts"] > ul');
   const newPostsUl = document.createElement('ul');
-  state.form.fields.posts.forEach((postList) => {
-    postList.forEach(({ post }) => {
+  state.form.fields.posts.forEach(({ postsWithId }) => {
+    postsWithId.forEach(({ postInner }) => {
       const li = document.createElement('li');
       const link = document.createElement('a');
-      const href = post.querySelector('link');
-      const title = post.querySelector('title');
-      link.setAttribute('href', href);
-      link.textContent = title.textContent;
+      link.setAttribute('href', postInner.link);
+      link.textContent = postInner.title;
       li.append(link);
       newPostsUl.append(li);
     });

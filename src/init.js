@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import onChange from 'on-change';
 import i18n from 'i18next';
 import axios from 'axios';
+import _ from 'lodash';
 import ru from './locales/ru.js';
 import { render, renderError } from './view.js';
 import parser from './utils/parser.js';
@@ -54,6 +55,15 @@ export default () => {
   form.append(button, input);
   document.body.append(form, feeds, posts);
 
+  const errorHandler = (err) => {
+    console.log(err);
+    if (err.message === 'Network Error') {
+      renderError('Network is not ok.', input);
+    } else {
+      renderError(err.message, input);
+    }
+  };
+
   const state = {
     form: {
       fields: {
@@ -74,31 +84,19 @@ export default () => {
             const data = parser(response.data);
             const feedId = ID();
             data.feed.id = feedId;
+            data.feed.link = value;
             state.form.fields.feeds.push(data.feed);
-            const postsList = [];
-            // Парсить каждый новоприбывший пост в объект (как и фид), и только потом рендерить
-            // Array.from() ---> arr.filter() ---> posts.push(filtered)
-            // Повторить промисы.
+            const postsWithId = [];
             data.posts.forEach((post) => {
-              postsList.push({
+              postsWithId.push({
                 id: ID(),
-                feedId,
-                post,
+                postInner: post,
               });
             });
-            state.form.fields.posts.push(postsList);
+            state.form.fields.posts.push({ feedId, postsWithId });
             render(state);
-          } else {
-            renderError('Network is not ok.', input);
           }
-        }).catch((err) => {
-          if (err.message === 'Network Error') {
-            renderError('Network is not ok.', input);
-          } else {
-            renderError(err.message, input);
-          }
-        });
-      render(state);
+        }).catch(errorHandler);
     }
   });
 
@@ -114,4 +112,46 @@ export default () => {
       renderError(err.errors, input);
     });
   });
+
+  setTimeout(function checker() {
+    state.form.fields.feeds.forEach((feed) => {
+      axios(`https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${encodeURIComponent(feed.link)}`)
+        .then((response) => {
+          if (response.status === 200) {
+            const data = parser(response.data);
+            let currentFeedIndex;
+
+            const currentFeedPosts = state.form.fields.posts
+              .filter((post) => {
+                const isCorrect = post.feedId === feed.id;
+                if (isCorrect) {
+                  currentFeedIndex = state.form.fields.posts.findIndex(
+                    (unfilteredPost) => _.isEqual(unfilteredPost, post),
+                  );
+                  return isCorrect;
+                }
+                return false;
+              });
+
+            const currentFeedPostsList = currentFeedPosts
+              .map((post) => post.postsWithId.map((postUnit) => postUnit.postInner));
+            const newPosts = _.differenceWith(data.posts, currentFeedPostsList[0], _.isEqual);
+            if (newPosts.length > 0) {
+              const newPostsWithId = [];
+              newPosts.forEach((post) => {
+                newPostsWithId.push({
+                  id: ID(),
+                  postInner: post,
+                });
+              });
+              state.form.fields.posts[currentFeedIndex].postsWithId.unshift(...newPostsWithId);
+              render(state);
+            }
+          }
+        })
+        .catch(errorHandler);
+    });
+    setTimeout(checker, 5000);
+  }, 5000);
 };
+// при каждом чеке и 1 вводе вызываем функцию, которая делает фиды и посты пригодными к ренденру
