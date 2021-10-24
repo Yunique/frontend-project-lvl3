@@ -10,6 +10,7 @@ export default (data) => {
       posts.push({
         link: post.querySelector('link').textContent,
         title: post.querySelector('title').textContent,
+        description: post.querySelector('description').textContent,
       });
     });
     return {
