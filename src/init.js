@@ -31,15 +31,8 @@ export default () => {
 
   const schema = yup.string().required().url();
 
-  const form = document.querySelector('form');
+  const form = document.querySelector('.rss-form');
   const input = form.querySelector('input');
-  const feeds = document.querySelector('.feeds');
-  const feedsUl = document.createElement('ul');
-  const posts = document.createElement('div');
-  const postsUl = document.createElement('ul');
-
-  feeds.append(feedsUl);
-  posts.append(postsUl);
 
   const errorHandler = (err) => {
     console.log(err);
@@ -134,10 +127,10 @@ export default () => {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const formData = new FormData(form);
-    const inputValue = formData.get('input');
-    schema.validate(inputValue).then((value) => {
-      watchedState.form.fields.url = value.trim();
+    const formData = new FormData(e.target);
+    const currentUrl = formData.get('url').trim();
+    schema.validate(currentUrl).then((value) => {
+      watchedState.form.fields.url = value;
       input.value = '';
       input.focus();
     }).catch((err) => {

@@ -16,7 +16,7 @@ const removeInvalidFeedbackIfExists = () => {
 export const renderFeeds = (state) => {
   removeInvalidFeedbackIfExists();
 
-  const feedsUl = document.querySelector('div[name="feeds"] > ul');
+  const feeds = document.querySelector('.feeds');
   const newFeedsUl = document.createElement('ul');
   state.form.fields.feeds.forEach((feed) => {
     const li = document.createElement('li');
@@ -27,13 +27,13 @@ export const renderFeeds = (state) => {
     li.append(title, description);
     newFeedsUl.append(li);
   });
-  feedsUl.replaceWith(newFeedsUl);
+  feeds.replaceChildren(newFeedsUl);
 };
 
 export const renderPosts = (state) => {
   removeInvalidFeedbackIfExists();
 
-  const postsUl = document.querySelector('div[name="posts"] > ul');
+  const posts = document.querySelector('.posts');
   const newPostsUl = document.createElement('ul');
   state.form.fields.posts.forEach(({ postsWithId }) => {
     postsWithId.forEach(({ postInner, id }) => {
@@ -44,24 +44,25 @@ export const renderPosts = (state) => {
       link.classList.add('fw-normal');
       const button = document.createElement('button');
       button.innerHTML = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
-      Предпросмотр
+      Посмотреть
     </button>`;
       button.addEventListener('click', (e) => {
         e.preventDefault();
-        const modalBody = document.querySelector('.modal-body p');
+        const modalBody = document.querySelector('.modal-body');
         modalBody.textContent = postInner.description;
         const modalTitle = document.querySelector('.modal-title');
         modalTitle.textContent = postInner.title;
+        const modalMore = document.querySelector('.modal-footer .btn');
+        modalMore.setAttribute('href', postInner.link);
         // eslint-disable-next-line no-param-reassign
         state.uiState[id].seen = true;
         link.classList.replace('fw-normal', 'fw-bold');
-        console.log(state.uiState);
       });
       li.append(link, button);
       newPostsUl.append(li);
     });
   });
-  postsUl.replaceWith(newPostsUl);
+  posts.replaceChildren(newPostsUl);
 };
 
 export const renderError = (error, element) => {
