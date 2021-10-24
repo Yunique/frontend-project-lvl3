@@ -1,18 +1,8 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const dynamicEntryPoints = require('dynamic-webpack-entries');
-
-const entries = dynamicEntryPoints({
-  entryFolder: './src/',
-});
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
-  entry: entries,
   devtool: 'inline-source-map',
-  devServer: {
-    static: './dist',
-  },
   module: {
     rules: [
       {
@@ -28,7 +18,7 @@ module.exports = {
       { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
       },
       {
         test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -42,12 +32,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      index: 'index.html',
+      template: 'index.html',
     }),
   ],
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true,
-  },
 };

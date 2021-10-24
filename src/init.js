@@ -31,44 +31,15 @@ export default () => {
 
   const schema = yup.string().required().url();
 
-  document.body.innerHTML = `<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Modal body text goes here.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>`;
   const form = document.querySelector('form');
-  const input = document.querySelector('input');
-  input.name = 'input';
-  const button = document.querySelector('button');
-  button.textContent = i18nextInstance.t('submitButton');
-
-  const feeds = document.querySelector('div');
-  const feedsHeader = document.querySelector('H1');
-  feedsHeader.innerHTML = i18nextInstance.t('feeds');
+  const input = form.querySelector('input');
+  const feeds = document.querySelector('.feeds');
   const feedsUl = document.createElement('ul');
-
   const posts = document.createElement('div');
-  posts.setAttribute('name', 'posts');
-  const postsHeader = document.createElement('H1');
-  postsHeader.innerHTML = i18nextInstance.t('posts');
   const postsUl = document.createElement('ul');
 
-  feeds.append(feedsHeader, feedsUl);
-  posts.append(postsHeader, postsUl);
-  form.append(button, input);
-  document.body.append(form, feeds, posts);
+  feeds.append(feedsUl);
+  posts.append(postsUl);
 
   const errorHandler = (err) => {
     console.log(err);
