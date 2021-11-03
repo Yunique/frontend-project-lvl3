@@ -4,7 +4,12 @@ import i18n from 'i18next';
 import axios from 'axios';
 import _ from 'lodash';
 import ru from './locales/ru.js';
-import { renderFeeds, renderPosts, renderFeedback, changeFormRenderState } from './view.js';
+import {
+  renderFeeds,
+  renderPosts,
+  renderFeedback,
+  changeFormRenderState,
+} from './view.js';
 import parser from './utils/parser.js';
 
 const ID = () => `_${Math.random().toString(36).substr(2, 9)}`;

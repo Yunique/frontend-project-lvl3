@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export const renderFeeds = (state) => {
   const feeds = document.querySelector('.feeds');
   const newFeedsUl = document.createElement('ul');
@@ -26,8 +27,8 @@ export const renderPosts = (state) => {
       if (state.uiState[id].seen) {
         link.classList.add('fw-normal', 'link-secondary');
       } else {
-        link.classList.add('fw-bold')
-      } 
+        link.classList.add('fw-bold');
+      }
       const button = document.createElement('button');
       button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
       button.setAttribute('type', 'button');
@@ -43,7 +44,6 @@ export const renderPosts = (state) => {
         modalTitle.textContent = postInner.title;
         const modalMore = document.querySelector('.modal-footer .btn');
         modalMore.setAttribute('href', postInner.link);
-        // eslint-disable-next-line no-param-reassign
         state.uiState[id].seen = true;
         link.classList.remove('fw-bold');
         link.classList.add('fw-normal', 'link-secondary');
@@ -80,5 +80,4 @@ export const changeFormRenderState = (element) => {
 
   button.toggleAttribute('disabled');
   input.toggleAttribute('readonly');
-
-}
+};
