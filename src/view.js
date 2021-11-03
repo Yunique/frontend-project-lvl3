@@ -23,7 +23,7 @@ export const renderPosts = (state) => {
       const link = document.createElement('a');
       link.setAttribute('href', postInner.link);
       link.textContent = postInner.title;
-      link.classList.add('fw-normal');
+      link.classList.add('fw-normal', 'link-secondary');
       const button = document.createElement('button');
       button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
       button.setAttribute('type', 'button');
