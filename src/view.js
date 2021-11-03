@@ -73,7 +73,7 @@ export const changeFormRenderState = (element) => {
   const button = element.querySelector('button');
   const input = element.querySelector('input');
 
-  button.classList.toggle('disabled');
-  input.classList.toggle('readonly');
+  button.toggleAttribute('disabled');
+  input.toggleAttribute('readonly');
 
 }

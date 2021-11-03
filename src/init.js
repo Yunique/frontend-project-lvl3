@@ -63,6 +63,7 @@ export default () => {
         const currentFeedsList = state.form.fields.feeds.map((feed) => feed.link);
         if (currentFeedsList.includes(value)) {
           renderFeedback(feedbackElement, 'error', i18nextInstance.t('duplicate'));
+          changeFormRenderState(form);
         } else {
           axios(`https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${encodeURIComponent(value)}`)
             .then((response) => {
