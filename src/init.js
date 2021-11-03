@@ -133,6 +133,7 @@ export default () => {
     const formData = new FormData(e.target);
     const currentUrl = formData.get('url').trim();
     schema.validate(currentUrl).then((value) => {
+      state.form.fields.url = '';
       watchedState.form.fields.url = value;
       input.value = '';
       input.focus();
