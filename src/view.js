@@ -45,7 +45,6 @@ export const renderPosts = (state) => {
         modalMore.setAttribute('href', postInner.link);
         // eslint-disable-next-line no-param-reassign
         state.uiState[id].seen = true;
-        link.classList.add('fw-normal', 'link-secondary');
       });
       li.append(link, button);
       newPostsUl.append(li);
