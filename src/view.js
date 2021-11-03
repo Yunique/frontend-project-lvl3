@@ -1,21 +1,4 @@
-// input.setAttribute('placeholder', 'ссылка RSS');
-// input.setAttribute('autocomplete', 'off');
-// input.setAttribute('aria-label', 'url');
-// input.setAttribute('required', 'true');
-// input.setAttribute('autofocus', 'true');
-
-const removeInvalidFeedbackIfExists = () => {
-  const input = document.querySelector('input');
-  if (input.classList.contains('is-invalid')) {
-    const feedback = document.querySelector('.invalid-feedback');
-    input.classList.remove('is-invalid');
-    feedback.remove();
-  }
-};
-
 export const renderFeeds = (state) => {
-  removeInvalidFeedbackIfExists();
-
   const feeds = document.querySelector('.feeds');
   const newFeedsUl = document.createElement('ul');
   state.form.fields.feeds.forEach((feed) => {
@@ -31,8 +14,6 @@ export const renderFeeds = (state) => {
 };
 
 export const renderPosts = (state) => {
-  removeInvalidFeedbackIfExists();
-
   const posts = document.querySelector('.posts');
   const newPostsUl = document.createElement('ul');
   state.form.fields.posts.forEach(({ postsWithId }) => {
@@ -49,7 +30,7 @@ export const renderPosts = (state) => {
       button.setAttribute('data-id', id);
       button.setAttribute('data-bs-toggle', 'modal');
       button.setAttribute('data-bs-target', '#modal');
-      button.textContent = 'View';
+      button.textContent = 'Просмотр';
       button.addEventListener('click', (e) => {
         e.preventDefault();
         const modalBody = document.querySelector('.modal-body');
@@ -69,15 +50,21 @@ export const renderPosts = (state) => {
   posts.replaceChildren(newPostsUl);
 };
 
-export const renderError = (error, element) => {
-  element.classList.add('is-invalid');
-  const existingFeedback = document.querySelector('.invalid-feedback');
-  if (!existingFeedback) {
-    const feedbackElement = document.createElement('div');
-    feedbackElement.classList.add('invalid-feedback');
-    feedbackElement.textContent = error;
-    element.after(feedbackElement);
-  } else {
-    existingFeedback.textContent = error;
+export const renderFeedback = (element, feedbackType, message) => {
+  element.innerHTML = '';
+  const testingUrlElement = document.createElement('p');
+  testingUrlElement.classList.add('mt-2', 'mb-0', 'text-muted');
+  testingUrlElement.textContent = 'Пример: http://lorem-rss.herokuapp.com/feed';
+  const feedbackTextElement = document.createElement('p');
+  feedbackTextElement.classList.add('feedback', 'm-0', 'position-absolute', 'small');
+
+  if (feedbackType === 'error') {
+    feedbackTextElement.classList.add('text-danger');
+    feedbackTextElement.textContent = message;
+  } else if (feedbackType === 'success') {
+    feedbackTextElement.classList.add('text-success');
+    feedbackTextElement.textContent = message;
   }
+
+  element.append(testingUrlElement, feedbackTextElement);
 };

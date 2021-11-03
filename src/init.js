@@ -4,7 +4,7 @@ import i18n from 'i18next';
 import axios from 'axios';
 import _ from 'lodash';
 import ru from './locales/ru.js';
-import { renderFeeds, renderPosts, renderError } from './view.js';
+import { renderFeeds, renderPosts, renderFeedback } from './view.js';
 import parser from './utils/parser.js';
 
 const ID = () => `_${Math.random().toString(36).substr(2, 9)}`;
@@ -33,13 +33,15 @@ export default () => {
 
   const form = document.querySelector('.rss-form');
   const input = form.querySelector('input');
+  const feedbackElement = document.querySelector('.feedback-container');
 
   const errorHandler = (err) => {
-    console.log(err);
     if (err.message === 'Network Error') {
-      renderError('Network is not ok.', input);
+      renderFeedback(feedbackElement, 'error', 'Ошибка сети');
+    } else if (err.message === 'Parse Error') {
+      renderFeedback(feedbackElement, 'error', 'Ресурс не содержит валидный RSS');
     } else {
-      renderError(err.message, input);
+      renderFeedback(feedbackElement, 'error', err.message);
     }
   };
 
@@ -59,7 +61,7 @@ export default () => {
       case ('form.fields.url'): {
         const currentFeedsList = state.form.fields.feeds.map((feed) => feed.link);
         if (currentFeedsList.includes(value)) {
-          renderError(i18nextInstance.t('duplicate'), input);
+          throw new Error(i18nextInstance.t('duplicate'));
         } else {
           axios(`https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${encodeURIComponent(value)}`)
             .then((response) => {
@@ -80,6 +82,7 @@ export default () => {
                   state.uiState[postId] = { seen: false };
                 });
                 state.form.fields.posts.push({ feedId, postsWithId });
+                renderFeedback(feedbackElement, 'success', i18nextInstance.t('success'));
                 renderFeeds(state);
                 renderPosts(state);
               }
@@ -134,7 +137,7 @@ export default () => {
       input.value = '';
       input.focus();
     }).catch((err) => {
-      renderError(err.errors, input);
+      renderFeedback(feedbackElement, 'error', err.errors);
     });
   });
 
