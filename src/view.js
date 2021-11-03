@@ -68,3 +68,12 @@ export const renderFeedback = (element, feedbackType, message) => {
 
   element.append(testingUrlElement, feedbackTextElement);
 };
+
+export const changeFormRenderState = (element) => {
+  const button = element.querySelector('button');
+  const input = element.querySelector('input');
+
+  button.classList.toggle('disabled');
+  input.classList.toggle('readonly');
+
+}

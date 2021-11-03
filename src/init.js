@@ -4,7 +4,7 @@ import i18n from 'i18next';
 import axios from 'axios';
 import _ from 'lodash';
 import ru from './locales/ru.js';
-import { renderFeeds, renderPosts, renderFeedback } from './view.js';
+import { renderFeeds, renderPosts, renderFeedback, changeFormRenderState } from './view.js';
 import parser from './utils/parser.js';
 
 const ID = () => `_${Math.random().toString(36).substr(2, 9)}`;
@@ -60,6 +60,7 @@ export default () => {
   const watchedState = onChange(state, (path, value) => {
     switch (path) {
       case ('form.fields.url'): {
+        changeFormRenderState(form);
         const currentFeedsList = state.form.fields.feeds.map((feed) => feed.link);
         if (currentFeedsList.includes(value)) {
           renderFeedback(feedbackElement, 'error', i18nextInstance.t('duplicate'));
@@ -86,6 +87,7 @@ export default () => {
                 renderFeedback(feedbackElement, 'success', i18nextInstance.t('success'));
                 renderFeeds(state);
                 renderPosts(state);
+                changeFormRenderState(form);
                 state.form.fields.url = '';
               }
             }).catch(errorHandler);
