@@ -36,6 +36,7 @@ export default () => {
   const feedbackElement = document.querySelector('.feedback-container');
 
   const errorHandler = (err) => {
+    console.log(err)
     if (err.message === 'Network Error') {
       renderFeedback(feedbackElement, 'error', 'Ошибка сети');
     } else if (err.message === 'Parse Error') {
@@ -61,7 +62,7 @@ export default () => {
       case ('form.fields.url'): {
         const currentFeedsList = state.form.fields.feeds.map((feed) => feed.link);
         if (currentFeedsList.includes(value)) {
-          throw new Error(i18nextInstance.t('duplicate'));
+          renderFeedback(feedbackElement, 'error', i18nextInstance.t('duplicate'));
         } else {
           axios(`https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${encodeURIComponent(value)}`)
             .then((response) => {
@@ -85,6 +86,7 @@ export default () => {
                 renderFeedback(feedbackElement, 'success', i18nextInstance.t('success'));
                 renderFeeds(state);
                 renderPosts(state);
+                state.form.fields.url = '';
               }
             }).catch(errorHandler);
         }
@@ -133,7 +135,6 @@ export default () => {
     const formData = new FormData(e.target);
     const currentUrl = formData.get('url').trim();
     schema.validate(currentUrl).then((value) => {
-      state.form.fields.url = '';
       watchedState.form.fields.url = value;
       input.value = '';
       input.focus();
