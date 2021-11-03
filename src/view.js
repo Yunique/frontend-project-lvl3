@@ -23,7 +23,11 @@ export const renderPosts = (state) => {
       const link = document.createElement('a');
       link.setAttribute('href', postInner.link);
       link.textContent = postInner.title;
-      link.classList.add('fw-normal', 'link-secondary');
+      if (state.uiState[id].seen) {
+        link.classList.add('fw-bold')
+      } else {
+        link.classList.add('fw-normal', 'link-secondary');;
+      } 
       const button = document.createElement('button');
       button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
       button.setAttribute('type', 'button');
@@ -41,7 +45,7 @@ export const renderPosts = (state) => {
         modalMore.setAttribute('href', postInner.link);
         // eslint-disable-next-line no-param-reassign
         state.uiState[id].seen = true;
-        link.classList.replace('fw-normal', 'fw-bold');
+        link.classList.add('fw-bold');
       });
       li.append(link, button);
       newPostsUl.append(li);
