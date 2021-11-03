@@ -36,7 +36,7 @@ export default () => {
   const feedbackElement = document.querySelector('.feedback-container');
 
   const errorHandler = (err) => {
-    console.log(err)
+    changeFormRenderState(form);
     if (err.message === 'Network Error') {
       renderFeedback(feedbackElement, 'error', 'Ошибка сети');
     } else if (err.message === 'Parse Error') {
@@ -60,7 +60,6 @@ export default () => {
   const watchedState = onChange(state, (path, value) => {
     switch (path) {
       case ('form.fields.url'): {
-        changeFormRenderState(form);
         const currentFeedsList = state.form.fields.feeds.map((feed) => feed.link);
         if (currentFeedsList.includes(value)) {
           renderFeedback(feedbackElement, 'error', i18nextInstance.t('duplicate'));
@@ -134,6 +133,7 @@ export default () => {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    changeFormRenderState(form);
     const formData = new FormData(e.target);
     const currentUrl = formData.get('url').trim();
     schema.validate(currentUrl).then((value) => {
