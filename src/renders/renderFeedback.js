@@ -1,18 +1,20 @@
-export default (elements, state, i18nextInstance) => {
-  element.innerHTML = '';
-  const testingUrlElement = document.createElement('p');
-  testingUrlElement.classList.add('mt-2', 'mb-0', 'text-muted');
-  testingUrlElement.textContent = 'Пример: http://lorem-rss.herokuapp.com/feed';
-  const feedbackTextElement = document.createElement('p');
-  feedbackTextElement.classList.add('feedback', 'm-0', 'position-absolute', 'small');
+export default (elements, state, i18nInstance) => {
+  const { feedbackContainer } = elements;
 
-  if (feedbackType === 'error') {
-    feedbackTextElement.classList.add('text-danger');
-    feedbackTextElement.textContent = message;
-  } else if (feedbackType === 'success') {
-    feedbackTextElement.classList.add('text-success');
-    feedbackTextElement.textContent = message;
+  feedbackContainer.innerHTML = '';
+  const exampleUrlElement = document.createElement('p');
+  exampleUrlElement.classList.add('mt-2', 'mb-0', 'text-muted');
+  exampleUrlElement.textContent = i18nInstance.t('rssExample');
+
+  const feedbackElement = document.createElement('p');
+  feedbackElement.classList.add('feedback', 'm-0', 'position-absolute', 'small');
+  if (state.rssForm.error !== null) {
+    feedbackElement.classList.add('text-danger');
+    feedbackElement.textContent = i18nInstance.t(`feedbackMessages.errors.${state.rssForm.error}`);
+  } else {
+    feedbackElement.classList.add('text-success');
+    feedbackElement.textContent = i18nInstance.t('feedbackMessages.success');
   }
 
-  element.append(testingUrlElement, feedbackTextElement);
+  feedbackContainer.append(exampleUrlElement, feedbackElement);
 };

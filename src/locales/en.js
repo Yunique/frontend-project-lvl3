@@ -1,12 +1,25 @@
 export default {
   translation: {
-    feeds: 'Feeds: ',
-    posts: 'Posts: ',
-    submitButton: 'Maybe now?',
-    duplicate: 'RSS already exists',
-    url: 'URL must be valid',
-    required: 'Can\'t be empty',
-    string: 'Link should be valid URL',
-    success: 'RSS loaded successfully',
+    languages: {
+      en: 'English',
+    },
+    buttons: {
+      viewing: 'View',
+    },
+    titles: {
+      feeds: 'Feeds',
+      posts: 'Posts',
+    },
+    rssExample: 'Example: http://lorem-rss.herokuapp.com/feed',
+    feedbackMessages: {
+      errors: {
+        unknown: 'Unknown error',
+        connection: 'Network error',
+        incorrectUrl: 'Link should be correct URL',
+        dublicateUrl: 'RSS already exists',
+        invalidRss: 'Resource doesn\'t contain correct RSS',
+      },
+      success: 'RSS loaded successfully',
+    },
   },
 };
