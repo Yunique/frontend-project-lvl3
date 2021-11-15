@@ -1,8 +1,5 @@
 export default {
   translation: {
-    languages: {
-      en: 'English',
-    },
     buttons: {
       viewing: 'View',
     },
