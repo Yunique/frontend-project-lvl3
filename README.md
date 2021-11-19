@@ -10,7 +10,7 @@ make install
 ## Run
 
 ```sh
-make develop
+make build
 ```
 
 ## App link
